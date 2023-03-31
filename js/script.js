@@ -19,14 +19,14 @@ const { createApp } = Vue;
 createApp({
     data() {
         return {
-            toDoList : [
+            todos : [
                 {
                     text: "Comprare il latte",
                     done: false
                 },
                 {
                     text: "Sistemare il giardino",
-                    done: true
+                    done: false
                 },
                 {
                     text: "Pulire la macchina",
@@ -36,7 +36,39 @@ createApp({
                     text: "Fare il bucato",
                     done: false
                 },
-            ]
+            ],
+            newTodo: {
+                text: "",
+                done: ""
+            },
+            error: false
+        }
+    },
+    methods: {
+        addTodo() {
+            if (this.newTodo.text.length > 0) {
+                this.error = false;
+
+                this.newTodo.text = this.newTodo.text[0].toUpperCase() + this.newTodo.text.substring(1);
+
+                this.todos.unshift({
+                    text: this.newTodo.text,
+                    done: false
+                });
+                this.newTodo.text = "";
+            } else {
+                this.error = true;
+
+                setTimeout(() => {
+                    this.error = false;
+                }, 3000);
+            }
+        },
+        removeTodo(indexToRemove) {
+            this.todos.splice(indexToRemove, 1);
+        },
+        toggleDone(indexToToggle) {
+            this.todos[indexToToggle].done = !this.todos[indexToToggle].done;
         }
     }
 }).mount("#app");

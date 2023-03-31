@@ -20,12 +20,17 @@
         <div class="container d-flex flex-column align-items-center">
             <img class="mb-5" src="https://hiringplatform.boolean.careers/images/logo.png" alt="Logo Boolean">
             <h1>To Do List</h1>
-            <ul class="list-group" v-if="toDoList.length > 0">
-                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="toDo in toDoList">
-                    <h3 v-if="toDo.done" class="done">{{toDo.text}}</h3>
-                    <h3 v-else>{{toDo.text}}</h3>
-                    <span class="text-success" v-if="toDo.done">&check;</span>
-                    <span class="text-danger" v-else>&cross;</span>
+
+            <div class="new-todo">
+                <p class="error" v-show="error">Errore! ToDo non può essere vuoto</p>
+                <input type="text" placeholder="Aggiugni un nuovo ToDo" v-model.trim="newTodo.text" @keyup.enter="addTodo">
+                <button class="add-btn" @click="addTodo">Aggiungi</button>
+            </div>
+
+            <ul class="list-group" v-if="todos.length > 0">
+                <li class="list-group-item d-flex justify-content-between align-items-center" v-for="(todo, index) in todos" @click="toggleDone(index)">
+                    <h3 :class="{'done': todo.done}">{{todo.text}}</h3>
+                    <span class="text-danger delete" @click.stop="removeTodo(index)">&cross;</span>
                 </li>
             </ul>
         </div>
